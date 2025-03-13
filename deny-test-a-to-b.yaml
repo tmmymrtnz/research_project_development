@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: deny-test-a-to-b
+  namespace: test-b
+spec:
+  endpointSelector:
+    matchLabels:
+      app: pod-b
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: pod-a

@@ -1,0 +1,18 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-http-test-a-to-b
+  namespace: test-b
+spec:
+  endpointSelector:
+    matchLabels:
+      app: pod-b
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app: pod-a
+            io.kubernetes.pod.namespace: test-a
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-a
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-b
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-a
+  namespace: test-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pod-a
+  template:
+    metadata:
+      labels:
+        app: pod-a
+    spec:
+      containers:
+      - name: client
+        image: curlimages/curl
+        command: ["sleep", "3600"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-b
+  namespace: test-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pod-b
+  template:
+    metadata:
+      labels:
+        app: pod-b
+    spec:
+      containers:
+      - name: http-server
+        image: nginx
+        ports:
+        - containerPort: 80
